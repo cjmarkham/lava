@@ -1,0 +1,22 @@
+- total_pages = meta['page']['total']
+- page = meta['page']['current']
+
+- lower = (page - 5) < 1 ? 1 : page - 5
+- max = [page + 5, total_pages].min
+
+- (lower..page - 1).each do |i|
+    - uri = URI.parse request.url
+    - uri.query = URI.encode_www_form([["page"], ["#{i}"]])
+    - if params[:limit]
+        - uri.query = URI.encode_www_form([["page", i], ["limit", params[:limit]]])
+    %a.badge{href: uri.to_s}= i
+
+%span.badge.badge-primary= page
+
+- ((page + 1)..max).each do |i|
+    - uri = URI.parse request.url
+    - uri.query = URI.encode_www_form([["page"], ["#{i}"]])
+    - if params[:limit]
+        - uri.query = URI.encode_www_form([["page", i], ["limit", params[:limit]]])
+
+    %a.badge{href: uri.to_s}= i

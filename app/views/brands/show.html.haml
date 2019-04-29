@@ -1,0 +1,29 @@
+.text-center
+    %h1= @brand['name']
+
+- offset = 0
+- @products[:data].each_slice(4) do |row|
+    .row.brand-row
+        - row.each_with_index do |product, index|
+            .col-md-3
+                .product{class: product['stock'] == 0 && 'out-of-stock'}
+                    .image-container
+                        = link_to product_path(product['id']) do
+                            %img{src: @products[:included]['main_images'][offset + index]['link']['href']}
+                    .info
+                        .name
+                            %p= link_to product['name'], product_path(product['id'])
+                            %p= product['publisher']
+                        .price
+                            - price = product['price'].select{|p| p['currency'] == @currency}[0]
+                            - if price
+                                - money = Money.new price['amount'], price['currency']
+                                = money.format
+                            - else
+                                \--
+                        = render partial: 'partials/rating', locals: { product: product }
+            - if index == 3
+                - offset += 4
+
+- if @products[:meta]['page']['total'].to_i > 1
+    = render partial: 'partials/pagination', locals: { links: @products[:links], meta: @products[:meta] }

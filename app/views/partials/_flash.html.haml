@@ -1,0 +1,13 @@
+- mapping = {error: :danger}
+- [:error, :success, :info].each do |type|
+    - if flash[type]
+        - if flash[type].is_a? Array
+            - flash[type].each do |f|
+                .alert{class: "alert-#{mapping[type] || type}"}
+                    - if ! f.is_a? String
+                        = f['detail']
+                    - else
+                        = f
+        - else
+            .alert{class: "alert-#{mapping[type] || type}"}
+                = flash[type]

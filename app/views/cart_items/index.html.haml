@@ -1,0 +1,106 @@
+- if @cart_items.empty?
+    .alert.alert-warning
+        %p You have no items in your cart yet, go shopping!
+- else
+    .row
+        .col-md-10.col-md-offset-1
+            .row
+                .col-md-2
+                .col-md-4
+                    Name
+                .col-md-2.text-center
+                    Price
+                .col-md-2.text-center
+                    Quantity
+                .col-md-2
+            %hr
+            - @cart_items.each do |item|
+                .cart-item
+                    - if item['type'] == 'promotion_item'
+                        .row
+                            .col-md-2.text-center
+                                %span.fa.fa-piggy-bank
+                            .col-md-4
+                                %p= item['name']
+                            .col-md-2.text-center
+                                %p
+                                    - money = Money.new item['unit_price']['amount'], item['unit_price']['currency']
+                                    = money.format
+                            .col-md-2.text-center
+                                1
+                            .col-md-2.text-right
+                                %a.remove-from-cart{href: '#', data: { product: item['id'] } }
+                                    %span.fa.fa-times
+                                    Remove
+                    - else
+                        .row
+                            .col-md-2.text-center
+                                %img{src: item['image']['href'], width: 70, height: 100}
+                            .col-md-4
+                                %p= item['name']
+                            .col-md-2.text-center
+                                %p
+                                    - money = Money.new item['unit_price']['amount'], item['unit_price']['currency']
+                                    = money.format
+                            .col-md-2.text-center
+                                %p= item['quantity']
+                            .col-md-2.text-right
+                                %a.remove-from-cart{href: '#', data: { product: item['id'] } }
+                                    %span.fa.fa-times
+                                    Remove
+                    %hr
+
+            .row
+                .col-md-8
+                    .row
+                        .col-md-3
+                            %label Promo code:
+                        .col-md-9
+                            = form_tag '', id: 'promo-form' do
+                                = text_field_tag :promo_code, ''
+                                = submit_tag :Apply, class: 'btn btn-primary btn-sm'
+                .col-md-4.text-right
+                    Total:
+                    %span#cart-total= @cart['meta']['display_price']['with_tax']['formatted'].html_safe
+
+            = form_tag checkout_path, method: :post, id: 'checkout-form' do
+                = hidden_field_tag :token
+
+                %hr
+                .row
+                    .col-md-6
+                        .form-group
+                            %label Your name
+                            = text_field_tag :first_name, 'Carl', class: 'form-control'
+                        .form-group
+                            %label Address line 1
+                            = text_field_tag :address_1, 'Address 1', class: 'form-control'
+                        .form-group
+                            %label County
+                            = text_field_tag :county, 'County', class: 'form-control'
+                        .form-group
+                            %label Country
+                            = text_field_tag :country, 'Country', class: 'form-control'
+                    .col-md-6
+                        .form-group
+                            %label Your name
+                            = text_field_tag :last_name, 'Markham', class: 'form-control'
+                        .form-group
+                            %label Your email
+                            = text_field_tag :email, 'carl@foo.com', class: 'form-control'
+                        .form-group
+                            %label Address line 2
+                            = text_field_tag :address_2, 'Address 2', class: 'form-control'
+                        .form-group
+                            %label Post Code
+                            = text_field_tag :post_code, 'Dh2 3LT', class: 'form-control'
+
+                %hr
+                %label{for: 'card-element'}
+                    Credit or debit card
+                #card-element
+                %div#card-errors
+
+                %hr
+                .text-center
+                    = submit_tag 'Checkout', id: 'checkout', class: 'btn btn-primary'

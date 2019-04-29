@@ -1,0 +1,33 @@
+.text-center
+    - if @product['stock'] == 0
+        .alert.alert-danger
+            Sorry, this product is out of stock
+    .row
+        .col-md-6.text-center
+            %img{src: @image, width: 200, height: 300}
+            %br
+            %br
+            %p.text-muted= @product['data']['publisher']
+            - price = @product['data']['price'].select{|p| p['currency'] == @currency}[0]
+            - money = Money.new price['amount'], price['currency']
+            %p= money.format
+            = render partial: 'partials/rating', locals: { product: @product['data'] }
+        .col-md-6
+            %h2= @product['data']['name']
+            %br
+            .text-muted
+                = @product['data']['description']
+
+            %br
+            %br
+            .row
+                .col-md-6.col-md-offset-3
+                    .row
+                        .col-md-2
+                        .col-md-3{style: 'padding-top: 5px'}
+                            %label Quantity
+                        .col-md-5.text-right
+                            = number_field_tag :quantity, 1, class: 'form-control'
+                        .col-md-2
+                    %a#add-to-cart.btn.btn-primary.btn-lg{class: (@product['stock'] == 0 && 'disabled'), href: '#', data: { product: @product['data']['id'] } }
+                        Add to cart

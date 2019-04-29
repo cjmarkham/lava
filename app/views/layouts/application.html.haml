@@ -1,0 +1,42 @@
+!!!
+%head
+  %title Lava
+  %meta{name: "viewport", content: "width=device-width, initial-scale=1"}
+  = csrf_meta_tags
+  = csp_meta_tag
+
+  %script{src: 'https://code.jquery.com/jquery-2.2.4.min.js'}
+  %script{src: 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js'}
+  = stylesheet_link_tag 'application', media: 'all'
+  = javascript_include_tag 'application'
+  %link{rel: 'stylesheet', href: 'https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css'}
+  %link{rel: "stylesheet", href: "https://use.fontawesome.com/releases/v5.8.1/css/all.css"}
+  %script{src: 'https://js.stripe.com/v3/'}
+  :javascript
+    var stripe = Stripe('pk_test_EwiWJT55yFnp54ZRacOPOYhJ00QevnrDES');
+    var elements = stripe.elements();
+
+%body
+  = render partial: 'partials/navbar'
+  .js-flash.alert.alert-danger
+  .container.content-wrapper
+    = render partial: 'partials/flash'
+    = yield
+
+  %footer
+    .container
+      .form-group
+        .row
+          .col-md-6
+            .row
+              .col-md-3
+                %label Select currency
+              .col-md-3
+                %select.form-control#currency-select
+                  - if @currencies
+                    - @currencies.each do |currency|
+                      %option{value: currency['code'], selected: @currency == currency['code']}
+                        = currency['code']
+              .col-md-3
+              .col-md-3
+          .col-md-6

@@ -1,0 +1,11 @@
+.text-center
+    %h1 Oops, something went down!
+    %p We're working on fixing it. In the mean time, try these links:
+    = link_to 'Home page', root_path
+    %br
+    %br
+    %button.btn.btn-danger{onclick: "$('pre').slideToggle()"} To the danger zone
+    %br
+    %br
+    %pre{style: 'white-space: normal; display:none'}
+        = @err

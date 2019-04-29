@@ -1,0 +1,27 @@
+%nav.navbar.navbar-default
+  .container
+    .navbar-header
+      %button.navbar-toggle.collapsed{type: "button", data: { toggle: "collapse", target: "#bs-example-navbar-collapse-1"} }
+        %span.icon-bar
+        %span.icon-bar
+        %span.icon-bar
+      %a.navbar-brand{href: "#"} Lava
+
+    .collapse.navbar-collapse#bs-example-navbar-collapse-1
+      %ul.nav.navbar-nav
+        %li.dropdown
+          %a.dropdown-toggle{href: "#", data: { toggle: "dropdown" }}
+            Consoles
+            %span.caret
+          %ul.dropdown-menu
+            - if @brands
+              - @brands.each do |brand|
+                %li
+                  = link_to brand['name'], brand_path(brand['id'])
+
+      %ul.nav.navbar-nav.navbar-right
+        %li
+          = link_to cart_path do
+            %span.fa.fa-shopping-cart
+            %span#cart-count.badge
+              = @cart_items_count

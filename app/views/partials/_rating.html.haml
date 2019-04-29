@@ -1,0 +1,10 @@
+.rating{data: { rating: product['rating'], product: product['id'] }}
+    - (1..5).each do |i|
+        %span.fa-star{class: [i <= (product['rating'] || 0) ? 'fa' : 'far', "rating#{i}"], data: { rating: i }}
+    %p
+        Avg:
+        = product['rating']
+        from
+        = product['rated-users']
+        customers
+

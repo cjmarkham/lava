@@ -1,24 +1,11 @@
-# README
+# Setup
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+3 environment variables are needed to run this app
 
-Things you may want to cover:
+* MOLTIN_CLIENT_ID
+* MOLTIN_CLIENT_SECRET
+* MOLTIN_BASE_URL (https://api.moltin.com/v2)
 
-* Ruby version
+# Running
 
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+`rails s`
